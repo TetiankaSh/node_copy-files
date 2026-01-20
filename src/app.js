@@ -21,31 +21,40 @@ function copyFile(file, location) {
     return;
   }
 
-  try {
-    let finalDestination = location;
-
-    if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
-      finalDestination = path.join(location, path.basename(file));
-
-      if (path.resolve(finalDestination) === pathToFile) {
-        return;
-      }
-    }
-
-    fs.copyFileSync(file, finalDestination);
-  } catch (err) {
-    console.error(err.message);
+  if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
+    console.error('Destination is a directory');
   }
+
+  fs.copyFileSync(file, location);
+
+  // try {
+  //   let finalDestination = location;
+
+  //   if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
+  //     finalDestination = path.join(location, path.basename(file));
+
+  //     if (path.resolve(finalDestination) === pathToFile) {
+  //       return;
+  //     }
+  //   }
+
+  //   fs.copyFileSync(file, finalDestination);
+  // } catch (err) {
+  //   console.error(err.message);
+  // }
 }
 
-const params = process.argv.slice(2);
+try {
+  const params = process.argv.slice(2);
 
-if (params.length < 2) {
-  throw new Error('Two arguments are required');
+  if (params.length < 2) {
+    console.error('Two arguments are required');
+  }
+
+  const source = params[0];
+  const destination = params[1];
+
+  copyFile(source, destination);
+} catch (err) {
+  console.error(err);
 }
-
-const source = params[0];
-
-const destination = params[1];
-
-copyFile(source, destination);
