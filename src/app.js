@@ -30,18 +30,23 @@ function copyFile(file, location) {
   fs.copyFileSync(file, location);
 }
 
-try {
-  const params = process.argv.slice(2);
+function main() {
+  try {
+    const params = process.argv.slice(2);
 
-  if (params.length !== 2) {
-    console.error('Two arguments are required');
-    process.exit(1);
+    if (params.length !== 2) {
+      console.error('Two arguments are required');
+
+      return;
+    }
+
+    const source = params[0];
+    const destination = params[1];
+
+    copyFile(source, destination);
+  } catch (err) {
+    console.error(err);
   }
-
-  const source = params[0];
-  const destination = params[1];
-
-  copyFile(source, destination);
-} catch (err) {
-  console.error(err);
 }
+
+main();
