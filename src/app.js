@@ -1,1 +1,51 @@
+/* eslint-disable no-console */
+
 'use strict';
+
+const fs = require('fs');
+
+const path = require('path');
+
+function copyFile(file, location) {
+  const pathToFile = path.resolve(file);
+
+  const pathToLocation = path.resolve(location);
+
+  if (pathToFile === pathToLocation) {
+    return;
+  }
+
+  if (!fs.existsSync(file)) {
+    console.error("This file doesn't exist.");
+
+    return;
+  }
+
+  try {
+    let finalDestination = location;
+
+    if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
+      finalDestination = path.join(location, path.basename(file));
+
+      if (path.resolve(finalDestination) === pathToFile) {
+        return;
+      }
+    }
+
+    fs.copyFileSync(file, finalDestination);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+const params = process.argv.slice(2);
+
+if (params.length < 2) {
+  throw new Error('Two arguments are required');
+}
+
+const source = params[0];
+
+const destination = params[1];
+
+copyFile(source, destination);
