@@ -35,6 +35,7 @@ try {
 
   if (params.length !== 2) {
     console.error('Two arguments are required');
+    process.exit(1);
   }
 
   const source = params[0];
