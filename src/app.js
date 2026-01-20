@@ -23,31 +23,17 @@ function copyFile(file, location) {
 
   if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
     console.error('Destination is a directory');
+
+    return;
   }
 
   fs.copyFileSync(file, location);
-
-  // try {
-  //   let finalDestination = location;
-
-  //   if (fs.existsSync(location) && fs.lstatSync(location).isDirectory()) {
-  //     finalDestination = path.join(location, path.basename(file));
-
-  //     if (path.resolve(finalDestination) === pathToFile) {
-  //       return;
-  //     }
-  //   }
-
-  //   fs.copyFileSync(file, finalDestination);
-  // } catch (err) {
-  //   console.error(err.message);
-  // }
 }
 
 try {
   const params = process.argv.slice(2);
 
-  if (params.length < 2) {
+  if (params.length !== 2) {
     console.error('Two arguments are required');
   }
 
